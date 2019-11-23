@@ -1,0 +1,19 @@
+{
+  "name": "apollo-todo",
+  "version": "1.0.0",
+  "description": "A project for learning apollo server in conjunction with prisma",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fractured2K/apollo-todo.git"
+  },
+  "author": "Fractured2K",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Fractured2K/apollo-todo/issues"
+  },
+  "homepage": "https://github.com/Fractured2K/apollo-todo#readme"
+}
