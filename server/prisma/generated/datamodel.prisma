@@ -1,4 +1,21 @@
 type User {
-  id: ID! @id
-  name: String!
+    id: ID! @id
+    createdAt: DateTime! @createdAt
+    updatedAt: DateTime! @updatedAt
+    firstName: String!
+    lastName: String!
+    email: String! @unique
+    password: String!
+    notes: [Note]! @relation(name: "NotesByUser", onDelete: CASCADE)
+
+}
+
+type Note {
+    id: ID! @id
+    createdAt: DateTime! @createdAt
+    updatedAt: DateTime! @updatedAt
+    user: ID! @relation(name: "NotesByUser")
+    title: String!
+    body: String!
+    isPublished: Boolean @default(value: false)
 }
