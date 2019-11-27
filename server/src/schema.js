@@ -1,6 +1,8 @@
 const { gql } = require("apollo-server");
 
 const typeDefs = gql`
+  scalar DateTime
+  
   """
   Queries
   """
@@ -9,6 +11,7 @@ const typeDefs = gql`
     Me represents the current user, based off of the authorization token send from headers
     """
     me: User!
+    note: Note!
   }
 
   """
@@ -26,6 +29,8 @@ const typeDefs = gql`
   """
   type User {
     id: ID!
+    createdAt: DateTime!
+    updatedAt: DateTime! 
     firstName: String!
     lastName: String!
     email: String!

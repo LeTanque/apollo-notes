@@ -1,6 +1,9 @@
+# endpoint: http://localhost:4466/staging
+# endpoint: http://localhost:4466/production
 endpoint: http://localhost:4466
 datamodel: datamodel.prisma
 
 generate:
   - generator: javascript-client
-    output: ./generated/prisma-client/
+    output: ../src/generated/prisma-client/
+
