@@ -46,12 +46,12 @@ interface Node {
 
 type Note {
   id: ID!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  user: ID!
+  owner: User!
   title: String!
   body: String!
   isPublished: Boolean
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type NoteConnection {
@@ -62,15 +62,22 @@ type NoteConnection {
 
 input NoteCreateInput {
   id: ID
-  user: ID!
+  owner: UserCreateOneWithoutNotesInput!
   title: String!
   body: String!
   isPublished: Boolean
 }
 
-input NoteCreateManyInput {
-  create: [NoteCreateInput!]
+input NoteCreateManyWithoutOwnerInput {
+  create: [NoteCreateWithoutOwnerInput!]
   connect: [NoteWhereUniqueInput!]
+}
+
+input NoteCreateWithoutOwnerInput {
+  id: ID
+  title: String!
+  body: String!
+  isPublished: Boolean
 }
 
 type NoteEdge {
@@ -81,28 +88,25 @@ type NoteEdge {
 enum NoteOrderByInput {
   id_ASC
   id_DESC
-  createdAt_ASC
-  createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-  user_ASC
-  user_DESC
   title_ASC
   title_DESC
   body_ASC
   body_DESC
   isPublished_ASC
   isPublished_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type NotePreviousValues {
   id: ID!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  user: ID!
   title: String!
   body: String!
   isPublished: Boolean
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 input NoteScalarWhereInput {
@@ -120,36 +124,6 @@ input NoteScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  createdAt: DateTime
-  createdAt_not: DateTime
-  createdAt_in: [DateTime!]
-  createdAt_not_in: [DateTime!]
-  createdAt_lt: DateTime
-  createdAt_lte: DateTime
-  createdAt_gt: DateTime
-  createdAt_gte: DateTime
-  updatedAt: DateTime
-  updatedAt_not: DateTime
-  updatedAt_in: [DateTime!]
-  updatedAt_not_in: [DateTime!]
-  updatedAt_lt: DateTime
-  updatedAt_lte: DateTime
-  updatedAt_gt: DateTime
-  updatedAt_gte: DateTime
-  user: ID
-  user_not: ID
-  user_in: [ID!]
-  user_not_in: [ID!]
-  user_lt: ID
-  user_lte: ID
-  user_gt: ID
-  user_gte: ID
-  user_contains: ID
-  user_not_contains: ID
-  user_starts_with: ID
-  user_not_starts_with: ID
-  user_ends_with: ID
-  user_not_ends_with: ID
   title: String
   title_not: String
   title_in: [String!]
@@ -180,6 +154,22 @@ input NoteScalarWhereInput {
   body_not_ends_with: String
   isPublished: Boolean
   isPublished_not: Boolean
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [NoteScalarWhereInput!]
   OR: [NoteScalarWhereInput!]
   NOT: [NoteScalarWhereInput!]
@@ -203,44 +193,35 @@ input NoteSubscriptionWhereInput {
   NOT: [NoteSubscriptionWhereInput!]
 }
 
-input NoteUpdateDataInput {
-  user: ID
-  title: String
-  body: String
-  isPublished: Boolean
-}
-
 input NoteUpdateInput {
-  user: ID
+  owner: UserUpdateOneRequiredWithoutNotesInput
   title: String
   body: String
   isPublished: Boolean
 }
 
 input NoteUpdateManyDataInput {
-  user: ID
   title: String
   body: String
   isPublished: Boolean
 }
 
-input NoteUpdateManyInput {
-  create: [NoteCreateInput!]
-  update: [NoteUpdateWithWhereUniqueNestedInput!]
-  upsert: [NoteUpsertWithWhereUniqueNestedInput!]
+input NoteUpdateManyMutationInput {
+  title: String
+  body: String
+  isPublished: Boolean
+}
+
+input NoteUpdateManyWithoutOwnerInput {
+  create: [NoteCreateWithoutOwnerInput!]
   delete: [NoteWhereUniqueInput!]
   connect: [NoteWhereUniqueInput!]
   set: [NoteWhereUniqueInput!]
   disconnect: [NoteWhereUniqueInput!]
+  update: [NoteUpdateWithWhereUniqueWithoutOwnerInput!]
+  upsert: [NoteUpsertWithWhereUniqueWithoutOwnerInput!]
   deleteMany: [NoteScalarWhereInput!]
   updateMany: [NoteUpdateManyWithWhereNestedInput!]
-}
-
-input NoteUpdateManyMutationInput {
-  user: ID
-  title: String
-  body: String
-  isPublished: Boolean
 }
 
 input NoteUpdateManyWithWhereNestedInput {
@@ -248,15 +229,21 @@ input NoteUpdateManyWithWhereNestedInput {
   data: NoteUpdateManyDataInput!
 }
 
-input NoteUpdateWithWhereUniqueNestedInput {
-  where: NoteWhereUniqueInput!
-  data: NoteUpdateDataInput!
+input NoteUpdateWithoutOwnerDataInput {
+  title: String
+  body: String
+  isPublished: Boolean
 }
 
-input NoteUpsertWithWhereUniqueNestedInput {
+input NoteUpdateWithWhereUniqueWithoutOwnerInput {
   where: NoteWhereUniqueInput!
-  update: NoteUpdateDataInput!
-  create: NoteCreateInput!
+  data: NoteUpdateWithoutOwnerDataInput!
+}
+
+input NoteUpsertWithWhereUniqueWithoutOwnerInput {
+  where: NoteWhereUniqueInput!
+  update: NoteUpdateWithoutOwnerDataInput!
+  create: NoteCreateWithoutOwnerInput!
 }
 
 input NoteWhereInput {
@@ -274,36 +261,7 @@ input NoteWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  createdAt: DateTime
-  createdAt_not: DateTime
-  createdAt_in: [DateTime!]
-  createdAt_not_in: [DateTime!]
-  createdAt_lt: DateTime
-  createdAt_lte: DateTime
-  createdAt_gt: DateTime
-  createdAt_gte: DateTime
-  updatedAt: DateTime
-  updatedAt_not: DateTime
-  updatedAt_in: [DateTime!]
-  updatedAt_not_in: [DateTime!]
-  updatedAt_lt: DateTime
-  updatedAt_lte: DateTime
-  updatedAt_gt: DateTime
-  updatedAt_gte: DateTime
-  user: ID
-  user_not: ID
-  user_in: [ID!]
-  user_not_in: [ID!]
-  user_lt: ID
-  user_lte: ID
-  user_gt: ID
-  user_gte: ID
-  user_contains: ID
-  user_not_contains: ID
-  user_starts_with: ID
-  user_not_starts_with: ID
-  user_ends_with: ID
-  user_not_ends_with: ID
+  owner: UserWhereInput
   title: String
   title_not: String
   title_in: [String!]
@@ -334,6 +292,22 @@ input NoteWhereInput {
   body_not_ends_with: String
   isPublished: Boolean
   isPublished_not: Boolean
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [NoteWhereInput!]
   OR: [NoteWhereInput!]
   NOT: [NoteWhereInput!]
@@ -367,13 +341,13 @@ type Subscription {
 
 type User {
   id: ID!
-  createdAt: DateTime!
-  updatedAt: DateTime!
   firstName: String!
   lastName: String!
   email: String!
   password: String!
   notes(where: NoteWhereInput, orderBy: NoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Note!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type UserConnection {
@@ -388,7 +362,20 @@ input UserCreateInput {
   lastName: String!
   email: String!
   password: String!
-  notes: NoteCreateManyInput
+  notes: NoteCreateManyWithoutOwnerInput
+}
+
+input UserCreateOneWithoutNotesInput {
+  create: UserCreateWithoutNotesInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutNotesInput {
+  id: ID
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
 }
 
 type UserEdge {
@@ -399,10 +386,6 @@ type UserEdge {
 enum UserOrderByInput {
   id_ASC
   id_DESC
-  createdAt_ASC
-  createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
   firstName_ASC
   firstName_DESC
   lastName_ASC
@@ -411,16 +394,20 @@ enum UserOrderByInput {
   email_DESC
   password_ASC
   password_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type UserPreviousValues {
   id: ID!
-  createdAt: DateTime!
-  updatedAt: DateTime!
   firstName: String!
   lastName: String!
   email: String!
   password: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type UserSubscriptionPayload {
@@ -446,7 +433,7 @@ input UserUpdateInput {
   lastName: String
   email: String
   password: String
-  notes: NoteUpdateManyInput
+  notes: NoteUpdateManyWithoutOwnerInput
 }
 
 input UserUpdateManyMutationInput {
@@ -454,6 +441,25 @@ input UserUpdateManyMutationInput {
   lastName: String
   email: String
   password: String
+}
+
+input UserUpdateOneRequiredWithoutNotesInput {
+  create: UserCreateWithoutNotesInput
+  update: UserUpdateWithoutNotesDataInput
+  upsert: UserUpsertWithoutNotesInput
+  connect: UserWhereUniqueInput
+}
+
+input UserUpdateWithoutNotesDataInput {
+  firstName: String
+  lastName: String
+  email: String
+  password: String
+}
+
+input UserUpsertWithoutNotesInput {
+  update: UserUpdateWithoutNotesDataInput!
+  create: UserCreateWithoutNotesInput!
 }
 
 input UserWhereInput {
@@ -471,22 +477,6 @@ input UserWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  createdAt: DateTime
-  createdAt_not: DateTime
-  createdAt_in: [DateTime!]
-  createdAt_not_in: [DateTime!]
-  createdAt_lt: DateTime
-  createdAt_lte: DateTime
-  createdAt_gt: DateTime
-  createdAt_gte: DateTime
-  updatedAt: DateTime
-  updatedAt_not: DateTime
-  updatedAt_in: [DateTime!]
-  updatedAt_not_in: [DateTime!]
-  updatedAt_lt: DateTime
-  updatedAt_lte: DateTime
-  updatedAt_gt: DateTime
-  updatedAt_gte: DateTime
   firstName: String
   firstName_not: String
   firstName_in: [String!]
@@ -546,6 +536,22 @@ input UserWhereInput {
   notes_every: NoteWhereInput
   notes_some: NoteWhereInput
   notes_none: NoteWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]
